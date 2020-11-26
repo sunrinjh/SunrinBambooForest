@@ -7,6 +7,7 @@ __pycache__/
 *.jpeg
 # C extensions
 *.so
+migrations
 .vscode
 # Distribution / packaging
 .Python
