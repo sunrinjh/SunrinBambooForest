@@ -4,6 +4,14 @@ from django.template import loader
 from .models import Post,Comment,Photo
 from  django.urls import reverse
 # Create your views here.
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
 def index(request):
     latest_post_list_Even=[]
     latest_post_list_Odd=[]
@@ -25,17 +33,18 @@ def detail(request,post_id):
 
 def write(request,post_id):
     print(request.POST['comment'])
+    ip=get_client_ip(request)
     post = get_object_or_404(Post, id=post_id)
-    coment=Comment.create(post,request.POST['comment'])
+    coment=Comment.create(post,request.POST['comment'],ip)
     coment.save()
     return HttpResponseRedirect(reverse('detail', args=(post_id,)))
 def postWrite(request):
     try:
         title=request.POST['title']
         text=request.POST['text']
-        post=Post.create(title,text)
+        ip=get_client_ip(request)
+        post=Post.create(title,text,ip)
         post.save()
-
         for img in request.FILES.getlist('imgs'):
             # Photo 객체를 하나 생성한다.
             photo = Photo()

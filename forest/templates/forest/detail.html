@@ -66,7 +66,8 @@
   
   <hr id="midline">
   <div class="container" style="min-height: 400px;">
-    <h1 style="margin-bottom: 30px;">{{post.post_title}}</h1>
+    <h1 style="margin-bottom: 30px;display:inline;">{{post.post_title}}</h1>
+    <h6 style="font-size: 10px;">{{post.host_ip}}</h6>
     <p>{{post.post_text}}</p>
     {%if post.photo_set.all%}
     {% for photo in post.photo_set.all%}
@@ -93,7 +94,7 @@
   <ul class='list'>
     {%for comment in post.comment_set.all %}
     <hr class="solid">
-    <li>{{comment.id}} &nbsp; &nbsp; &nbsp; &nbsp; {{comment.comment_text}}</li>
+    <li>익명{{comment.id}}-<span style="font-size:13px">{{comment.host_ip}}</span> &nbsp; &nbsp; &nbsp; &nbsp; {{comment.comment_text}}</li>
     {%endfor%}
     <hr class="solid">
 
