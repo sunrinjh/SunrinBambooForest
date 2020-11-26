@@ -1,17 +1,23 @@
 from django.db import models
 
 # Create your models here.
+
+
 class Post(models.Model):
     post_title = models.CharField(max_length=200)
     post_text = models.CharField(max_length=200)
     post_time=models.DateTimeField(auto_now_add=True)
-    post_img=models.ImageField(null=True,blank=True)
     def __str__(self):
         return self.post_title
     @classmethod
     def create(cls, post_title,post_text,post_img=None):
-        post = cls(post_title=post_title,post_text=post_text,post_img=post_img)
+        post = cls(post_title=post_title,post_text=post_text)
         return post
+
+class Photo(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment_text = models.CharField(max_length=200)

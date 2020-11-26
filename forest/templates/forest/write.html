@@ -63,7 +63,7 @@
         </nav>
       </div>
     
-      <form action="{% url 'postWrite' %}" method="POST">
+      <form action="{% url 'postWrite' %}" method="POST"  enctype="multipart/form-data">
       {% csrf_token %}
         
       <div class="input-group mb-3">
@@ -71,6 +71,7 @@
       </div>
 
       <textarea name="text" rows=20 style="resize: none;" class="form-control" aria-label="With textarea"></textarea>
+      <input type="file" name="imgs" accept="image/png, image/jpeg" multiple>
       <button  type="submit" class="btn btn-primary btn-block">등록</button>
     </form>
 </form>

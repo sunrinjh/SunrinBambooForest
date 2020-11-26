@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template import loader
-from .models import Post,Comment
+from .models import Post,Comment,Photo
 from  django.urls import reverse
 # Create your views here.
 def index(request):
@@ -33,9 +33,18 @@ def postWrite(request):
     try:
         title=request.POST['title']
         text=request.POST['text']
-        # image=request.Post.get('image')
         post=Post.create(title,text)
         post.save()
+
+        for img in request.FILES.getlist('imgs'):
+            # Photo 객체를 하나 생성한다.
+            photo = Photo()
+            # 외래키로 현재 생성한 Post의 기본키를 참조한다.
+            photo.post = post
+            # imgs로부터 가져온 이미지 파일 하나를 저장한다.
+            photo.image = img
+            # 데이터베이스에 저장
+            photo.save()
         return HttpResponseRedirect(reverse('index', args=()))
 
     except KeyError:
