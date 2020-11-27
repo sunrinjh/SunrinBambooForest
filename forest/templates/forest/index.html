@@ -74,21 +74,22 @@
   <div class="row mb-2">
     <div class="col-md-6">
       <div class="row no-gutters rounded overflow-hidden flex-md-row mb-4  h-md-250 position-relative">
-        <!-- 여기다가 게시물 -->
-        <ul class="list">
-          {% for post in latest_post_list_Odd %}
-              <li><a class="text-dark" href="{% url 'detail' post.id %}"><b>{{ post.post_title }}</b></a></li>
+        <!-- 여기다가도 게시글 -->
+        <ul class="list d-flex" style="flex-direction: column; width: 100%;">
+
+        {% for post in latest_post_list_Even %}
+        <li class="d-flex"><a style="width: 100%; display: flex;" class="text-dark b-flex justify-content-between" href="{% url 'detail' post.id %}"><b>{{ post.post_title }}</b>  <span>like : {{ post.like_set.all|length }}</span>  </a></li>
           {% endfor %}
-          </ul>
+        </ul>
       </div>
     </div>
     <div class="col-md-6">
       <div class="row no-gutters rounded overflow-hidden flex-md-row mb-4  h-md-250 position-relative">
         <!-- 여기다가도 게시글 -->
-        <ul class="list">
+        <ul class="list d-flex" style="flex-direction: column; width: 100%;">
 
         {% for post in latest_post_list_Even %}
-              <li><a class="text-dark" href="{% url 'detail' post.id %}"><b>{{ post.post_title }}</b></a></li>
+        <li class="d-flex"><a style="width: 100%; display: flex;" class="text-dark b-flex justify-content-between" href="{% url 'detail' post.id %}"><b>{{ post.post_title }}</b>  <span>like : {{ post.like_set.all|length }}</span>  </a></li>
           {% endfor %}
         </ul>
       </div>
