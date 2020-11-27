@@ -12,6 +12,25 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
+def remove(request,post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    ip=get_client_ip(request)
+    if ip==post.host_ip:
+        post.delete()
+        return HttpResponseRedirect(reverse('index', args=()))
+    else:
+        return HttpResponse('you are not host')
+def remove_comment(request,comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    ip=get_client_ip(request)
+    post_id=comment.post_id
+    if ip==comment.host_ip:
+        comment.delete()
+        return HttpResponseRedirect(reverse('detail', args=(post_id,)))
+    else:
+        return HttpResponse('you are not host')
+
+
 def index(request):
     latest_post_list_Even=[]
     latest_post_list_Odd=[]
@@ -25,9 +44,12 @@ def index(request):
             
     context = {'latest_post_list_Odd': latest_post_list_Odd,'latest_post_list_Even':latest_post_list_Even}
     return render(request, 'forest/index.html', context)
+
 def detail(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
-    context = {'post_id':post_id,'post': post,'len':len(post.comment_set.all())}
+    ip=get_client_ip(request)
+    mine=ip=post.host_ip
+    context = {'post_id':post_id,'post': post,'len':len(post.comment_set.all()),'mine':mine}
 
     return render(request, 'forest/detail.html', context)
 
@@ -38,6 +60,7 @@ def write(request,post_id):
     coment=Comment.create(post,request.POST['comment'],ip)
     coment.save()
     return HttpResponseRedirect(reverse('detail', args=(post_id,)))
+
 def postWrite(request):
     try:
         title=request.POST['title']

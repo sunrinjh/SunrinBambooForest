@@ -34,8 +34,12 @@
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="blog.css" rel="stylesheet">
+    
   </head>
+  
   <body>
+
+    
     <div class="container">
   <header class="blog-header py-3">
     <div class="row flex-nowrap justify-content-between align-items-center" style="align-items: center;">
@@ -67,7 +71,17 @@
   <hr id="midline">
   <div class="container" style="min-height: 400px;">
     <h1 style="margin-bottom: 30px;display:inline;">{{post.post_title}}</h1>
+    <div class="container justify-content-between align-items-center d-flex">
     <h6 style="font-size: 10px;">{{post.host_ip}}</h6>
+    <span>
+    {%if mine%}
+    <a href="{%url 'remove' post_id%}">삭제</a>
+    
+    {%endif%}
+  </span>
+  </div>
+    <hr style="border-top:1px solid #000;">
+    
     <p>{{post.post_text}}</p>
     {%if post.photo_set.all%}
     {% for photo in post.photo_set.all%}
@@ -94,7 +108,14 @@
   <ul class='list'>
     {%for comment in post.comment_set.all %}
     <hr class="solid">
-    <li>익명{{comment.id}}-<span style="font-size:13px">{{comment.host_ip}}</span> &nbsp; &nbsp; &nbsp; &nbsp; {{comment.comment_text}}</li>
+    <li style="display: flex;"><div style="display: flex; width: 15%;">익명{{comment.id}}-<span style="font-size:13px">{{comment.host_ip}}</span> </div><div style="display: flex;width: 75%;">  {{comment.comment_text}}</div>
+    <span>
+      {%if mine%}
+      <a href="{%url 'remove_comment' comment.id%}">삭제</a>
+
+      {%endif%}
+    </span>
+  </li>
     {%endfor%}
     <hr class="solid">
 
