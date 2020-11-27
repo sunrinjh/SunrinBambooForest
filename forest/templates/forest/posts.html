@@ -69,31 +69,20 @@
       <p class="lead my-3">말하지 못 하는 것. 말하긴 힘든 것. 하나부터 열까지 선린 대나뭇숲애 작성해 주새요</p>
     </div>
   </div>
-  <h6>최신!</h6>
-  <hr id="midline">
-  <div class="row mb-2">
-    <div class="col-md-6">
-      <div class="row no-gutters rounded overflow-hidden flex-md-row mb-4  h-md-250 position-relative">
-        <!-- 여기다가 게시물 -->
-        <ul class="list">
-          {% for post in latest_post_list_Odd %}
-              <li><a class="text-dark" href="{% url 'detail' post.id %}"><b>{{ post.post_title }}</b></a></li>
-          {% endfor %}
-          </ul>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="row no-gutters rounded overflow-hidden flex-md-row mb-4  h-md-250 position-relative">
-        <!-- 여기다가도 게시글 -->
-        <ul class="list">
+  <hr style="border-top: 0.5px solid #6f6f6f;">
 
-        {% for post in latest_post_list_Even %}
-              <li><a class="text-dark" href="{% url 'detail' post.id %}"><b>{{ post.post_title }}</b></a></li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
-  </div>
+  <ul class="list">
+  {% for post in posts %}
+  <li><a  class="text-dark d-flex " href="{% url 'detail' post.id %}">
+      <b style="width: 73%;">{{ post.post_title }} · <span style="font-size: 10px;">{{post.host_ip}}</span></b>  
+
+    <span style="width: 10%;">Like : {{ post.like_set.all|length }}  </span>
+
+        <span>{{post.post_time}} </span>
+     </a></li>
+    <hr style="border-top: 0.5px solid #6f6f6f;">
+  {%endfor%}
+</ul>  
 </div>
 
 

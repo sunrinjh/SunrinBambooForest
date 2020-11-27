@@ -10,6 +10,7 @@ class Post(models.Model):
     host_ip=models.CharField(max_length=20)
     def __str__(self):
         return self.post_title
+        
     @classmethod
     def create(cls, post_title,post_text,ip):
         post = cls(post_title=post_title,post_text=post_text,host_ip=ip)
@@ -30,3 +31,13 @@ class Comment(models.Model):
     def create(cls, post,text,ip):
         comment = cls(post=post,comment_text=text,host_ip=ip)
         return comment
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    host_ip=models.CharField(max_length=20)
+    def __str__(self):
+        return self.host_ip
+    
+    @classmethod
+    def create(cls, post,ip):
+        like = cls(post=post,host_ip=ip)
+        return like

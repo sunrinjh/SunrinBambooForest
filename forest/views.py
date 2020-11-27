@@ -1,8 +1,9 @@
 from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template import loader
-from .models import Post,Comment,Photo
+from .models import Post,Comment,Photo,Like
 from  django.urls import reverse
+from django.db.models import Count
 # Create your views here.
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -11,7 +12,22 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+def good(request,post_id):
+    ip=get_client_ip(request)
+    post=get_object_or_404(Post,pk=post_id)
+    likes=post.like_set.all()
+    for like in likes:
+        print(like)
+        print(ip)
+        if str(ip)==str(like):
+            return HttpResponseRedirect(reverse('detail', args=(post_id,)))
 
+    like=Like.create(post,ip)
+    like.save()
+    return HttpResponseRedirect(reverse('detail', args=(post_id,)))
+
+    
+    return HttpResponse('good')
 def remove(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
     ip=get_client_ip(request)
@@ -30,6 +46,17 @@ def remove_comment(request,comment_id):
     else:
         return HttpResponse('you are not host')
 
+def current(request):
+    posts=Post.objects.order_by('-post_time')
+    context={'posts':posts}
+    return render(request,'forest/posts.html',context)
+    
+
+def best(request):
+    posts=Post.objects.all().annotate(total_likes=Count('like')).order_by('-total_likes')
+    print(posts.values)
+    context={'posts':posts}
+    return render(request,'forest/posts.html',context)
 
 def index(request):
     latest_post_list_Even=[]
@@ -45,12 +72,29 @@ def index(request):
     context = {'latest_post_list_Odd': latest_post_list_Odd,'latest_post_list_Even':latest_post_list_Even}
     return render(request, 'forest/index.html', context)
 
+def cancleLike(request,post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    likes=post.like_set.all()
+    ip=get_client_ip(request)
+
+    for like in likes:
+        if str(like)==str(ip):
+            like.delete()
+            break
+    return HttpResponseRedirect(reverse('detail', args=(post_id,)))
+
+    
 def detail(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
     ip=get_client_ip(request)
     mine= (ip==post.host_ip)
-    
-    context = {'post_id':post_id,'post': post,'len':len(post.comment_set.all()),'mine':mine ,'ip':ip}
+    likes=post.like_set.all()
+    chekedLike=False
+    for like in likes:
+        if str(ip)==str(like):
+            chekedLike=True
+            break
+    context = {'post_id':post_id,'post': post,'len':len(post.comment_set.all()),'mine':mine ,'ip':ip,'chekedLike':chekedLike}
 
     return render(request, 'forest/detail.html', context)
 

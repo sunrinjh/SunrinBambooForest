@@ -25,7 +25,7 @@ SECRET_KEY = 'w1r_g(#d$um!g6e3dhbp_#)=*dge3)5&-1suc$!-h=ahi1#c-x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tv.jhun.kr','localhost']
 
 
 # Application definition

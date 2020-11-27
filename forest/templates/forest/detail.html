@@ -60,8 +60,8 @@
 
   <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-start">
-      <a class="p-2 text-muted" href="{% url 'index' %}">게시글</a>
-      <a class="p-2 text-muted" href="{% url 'index' %}">베스트글</a>
+      <a class="p-2 text-muted" href="{% url 'current' %}">게시글</a>
+      <a class="p-2 text-muted" href="{% url 'best' %}">베스트글</a>
       <a class="p-2 text-muted" href="{% url 'postWrite' %}">글쓰기</a>
       
     </nav>
@@ -79,9 +79,18 @@
     
     {%endif%}
   </span>
+  
+
   </div>
     <hr style="border-top:1px solid #000;">
-    
+    <div class="d-flex justify-content-between">
+      {% if chekedLike %}
+      <a href="{%url 'cancleLike' post.id %}">좋아요취소</a >
+      {% else %}
+      <a href="{%url 'good' post.id %}">좋아요</a >
+      {% endif %}
+      <span>{{post.post_time}}</span>
+    </div>
     <p>{{post.post_text}}</p>
     {%if post.photo_set.all%}
     {% for photo in post.photo_set.all%}
