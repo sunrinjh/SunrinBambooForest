@@ -48,8 +48,9 @@ def index(request):
 def detail(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
     ip=get_client_ip(request)
-    mine=ip=post.host_ip
-    context = {'post_id':post_id,'post': post,'len':len(post.comment_set.all()),'mine':mine}
+    mine= (ip==post.host_ip)
+    
+    context = {'post_id':post_id,'post': post,'len':len(post.comment_set.all()),'mine':mine ,'ip':ip}
 
     return render(request, 'forest/detail.html', context)
 

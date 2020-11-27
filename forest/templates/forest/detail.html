@@ -110,7 +110,8 @@
     <hr class="solid">
     <li style="display: flex;"><div style="display: flex; width: 15%;">익명{{comment.id}}-<span style="font-size:13px">{{comment.host_ip}}</span> </div><div style="display: flex;width: 75%;">  {{comment.comment_text}}</div>
     <span>
-      {%if mine%}
+      
+      {% if ip == comment.host_ip %}
       <a href="{%url 'remove_comment' comment.id%}">삭제</a>
 
       {%endif%}
