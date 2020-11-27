@@ -77,7 +77,7 @@
         <!-- 여기다가도 게시글 -->
         <ul class="list d-flex" style="flex-direction: column; width: 100%;">
 
-        {% for post in latest_post_list_Even %}
+        {% for post in latest_post_list_Odd %}
         <li class="d-flex"><a style="width: 100%; display: flex;" class="text-dark b-flex justify-content-between" href="{% url 'detail' post.id %}"><b>{{ post.post_title }}</b>  <span>like : {{ post.like_set.all|length }}</span>  </a></li>
           {% endfor %}
         </ul>
