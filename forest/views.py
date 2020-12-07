@@ -4,6 +4,8 @@ from django.template import loader
 from .models import Post,Comment,Photo,Like
 from  django.urls import reverse
 from django.db.models import Count
+from django.contrib import messages
+
 # Create your views here.
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -12,6 +14,18 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+
+def search(request):
+    search_keyword = request.GET.get('q', '')
+    notice_list = Post.objects.order_by('-id') 
+    print(search_keyword)
+    if search_keyword :
+        notice_list = notice_list.filter(post_title__icontains=search_keyword)    
+            
+    content={'posts':notice_list,'text':'검색'}
+    return render(request, 'forest/posts.html', content)
+
 def good(request,post_id):
     ip=get_client_ip(request)
     post=get_object_or_404(Post,pk=post_id)
@@ -48,20 +62,21 @@ def remove_comment(request,comment_id):
 
 def current(request):
     posts=Post.objects.order_by('-post_time')
-    context={'posts':posts}
+    context={'posts':posts,'text':'최근순'}
     return render(request,'forest/posts.html',context)
     
 
 def best(request):
     posts=Post.objects.all().annotate(total_likes=Count('like')).order_by('-total_likes')
     print(posts.values)
-    context={'posts':posts}
+    context={'posts':posts,'text':'좋아요순'}
     return render(request,'forest/posts.html',context)
 
 def index(request):
     latest_post_list_Even=[]
     latest_post_list_Odd=[]
     latest_post_list=Post.objects.order_by('-post_time')[:10]
+    
     for i in range(len(latest_post_list)):
         if i%2==0:
             latest_post_list_Odd.append(latest_post_list[i])

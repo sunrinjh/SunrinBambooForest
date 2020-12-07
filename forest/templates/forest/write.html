@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>Signin Template · Bootstrap</title>
+    <title>글쓰기</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
     {% load static %}
@@ -46,7 +46,10 @@
             
           </div>
               
-              <input type="text" class="form-control" aria-label="Sizing example input " aria-describedby="inputGroup-sizing-default">
+          <form action="{% url 'search' %}" method="get" class="d-flex" style="width: 50vw;">
+            <input placeholder="검색어를 입력하십시오" name="q" type="text" class="form-control" >
+            <input type="submit" style="display:none">
+          </form>
     
           <div class="col-4 d-flex justify-content-end align-items-center">
             

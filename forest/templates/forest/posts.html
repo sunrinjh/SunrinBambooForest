@@ -6,10 +6,11 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>Blog Template · Bootstrap</title>
+    <title>게시글</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/blog/">
     {% load static %}
+    {% load post_extras %}
     <link rel="stylesheet" type="text/css" href="{% static 'forest/blog.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'forest/bootstrap.min.css' %}">
     <!-- Bootstrap core CSS -->
@@ -46,7 +47,10 @@
         
       </div>
           
-          <input type="text" class="form-control" aria-label="Sizing example input " aria-describedby="inputGroup-sizing-default">
+      <form action="{% url 'search' %}" method="get" class="d-flex" style="width: 50vw;">
+        <input placeholder="검색어를 입력하십시오" name="q" type="text" class="form-control" >
+        <input type="submit" style="display:none">
+      </form>
 
       <div class="col-4 d-flex justify-content-end align-items-center">
         
@@ -66,15 +70,17 @@
   <div class="jumbotron p-4 p-md-5 text-white rounded bg-success bacimage">
     <div class="col-md-6 px-0">
       <h1 class="display-4 font-italic">선린! 대나무숲!!</h1>
-      <p class="lead my-3">말하지 못 하는 것. 말하긴 힘든 것. 하나부터 열까지 선린 대나뭇숲애 작성해 주새요</p>
+      <p class="lead my-3">말하지 못 하는 것. 말하긴 힘든 것. 하나부터 열까지 선린 대나무숲애 작성해 주새요</p>
     </div>
   </div>
+  <h5>{{text}}</h5>
   <hr style="border-top: 0.5px solid #6f6f6f;">
 
   <ul class="list">
+  {% if posts%}
   {% for post in posts %}
   <li><a  class="text-dark d-flex " href="{% url 'detail' post.id %}">
-      <b style="width: 73%;">{{ post.post_title }} · <span style="font-size: 10px;">{{post.host_ip}}</span></b>  
+      <b style="width: 73%;">{{ post.post_title }} <span style="font-size: 10px;">({{post.host_ip|ipProcess}})</span></b>  
 
     <span style="width: 10%;">Like : {{ post.like_set.all|length }}  </span>
 
@@ -82,6 +88,9 @@
      </a></li>
     <hr style="border-top: 0.5px solid #6f6f6f;">
   {%endfor%}
+  {%else%}
+  게시글이없습니다
+  {%endif%}
 </ul>  
 </div>
 
