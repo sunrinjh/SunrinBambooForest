@@ -99,7 +99,7 @@
     <p>{{post.post_text}}</p>
     {%if post.photo_set.all%}
     {% for photo in post.photo_set.all%}
-    <img style="max-width: 90vw;" src="{{photo.image.url}}" ><br>
+    <img style="max-width: 90%;" src="{{photo.image.url}}" ><br>
 {% endfor %}
     {%endif%}
   </div>
